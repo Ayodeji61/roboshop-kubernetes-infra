@@ -11,3 +11,4 @@ variable "PROMETHEUS_NODE" {}
 variable "alb" {}
 variable "public_zone_id" {}
 variable "ACM_ARN" {}
+variable "eks" {}

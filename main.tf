@@ -85,3 +85,18 @@ module "alb" {
   vpc_cidr        = element([for i, j in module.vpc : j.vpc_cidr], 0)
   internal        = each.value.internal
 }
+
+
+module "EKS" {
+  source                  = "./vendor/modules/eks/"
+  ENV                     = var.env
+  PRIVATE_SUBNET_IDS      = flatten([for i, j in module.vpc : j.private_subnets["database"]["subnets"][*].id])
+  PUBLIC_SUBNET_IDS       = flatten([for i, j in module.vpc : j.public_subnets["public"]["subnets"][*].id])
+  DESIRED_SIZE            = 1
+  MAX_SIZE                = 1
+  MIN_SIZE                = 1
+  CREATE_ALB_INGRESS      = false
+  CREATE_EXTERNAL_SECRETS = false
+  INSTALL_KUBE_METRICS    = false
+
+}
